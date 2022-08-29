@@ -1,0 +1,8 @@
+core:
+  log:
+    storage-time:
+      #LogType - Day
+      info: 7
+      warning: 14
+      technical-error: -1 # You can enter day (maybe:365)  or enter -1. [-1 : permanent storage]
+      business-error: -1 # You can enter day (maybe:1095) or enter -1. [-1 : permanent storage]

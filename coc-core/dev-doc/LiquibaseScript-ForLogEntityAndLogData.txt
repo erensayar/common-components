@@ -1,0 +1,55 @@
+Core'u kullanan modüllerde direkt liquibase'e yapıştırılmalı!
+
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet id="08.22_1" author="eren.sayar" context="default, local, prod">
+
+    <createTable tableName="LOG" remarks="Account">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="pk_log" nullable="false"/>
+      </column>
+      <column name="trace_id" type="varchar(40)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="error_code" type="int">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="time_stamp" type="date">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user_id" type="varchar"/>
+      <column name="class_name_of_log_printed" type="varchar"/>
+      <column name="method_name_of_log_printed" type="varchar"/>
+      <column name="log_type" type="int"/>
+      <column name="java_exception_name" type="varchar"/>
+      <column name="java_exception_message" type="varchar"/>
+    </createTable>
+
+    <createTable tableName="LOG_DATA" remarks="Account">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="pk_log_data" nullable="false"/>
+      </column>
+      <column name="data_key" type="varchar"/>
+      <column name="data_value" type="varchar"/>
+    </createTable>
+
+    <!--Relations-->
+    <createTable tableName="RLT_LOG_LOG_DATA" remarks="Log and log data relation table.">
+      <column name="log_id" type="BIGINT"/>
+      <column name="log_data_id" type="BIGINT"/>
+    </createTable>
+
+    <!--Constraints-->
+    <addUniqueConstraint columnNames="trace_id"
+      constraintName="uc_log_trace_id"
+      tableName="log"/>
+  </changeSet>
+</databaseChangeLog>
