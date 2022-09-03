@@ -11,11 +11,11 @@
   </parent>
 
   <groupId>com.erensayar</groupId>
-  <artifactId>coc-cloud-main-parent</artifactId>
+  <artifactId>coc-cloud-top-parent</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
-  <name>coc-cloud-main-parent</name>
-  <description>coc-cloud-main-parent</description>
+  <name>coc-cloud-top-parent</name>
+  <description>coc-cloud-top-parent</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,6 +23,7 @@
     <spring-cloud.version>2021.0.3</spring-cloud.version>
     <spring-cloud-starter-zipkin.version>2.2.8.RELEASE</spring-cloud-starter-zipkin.version>
     <spring-cloud-starter-netflix-hystrix.version>2.2.10.RELEASE</spring-cloud-starter-netflix-hystrix.version>
+    <spring-cloud-starter-netflix-zuul.version>2.2.10.RELEASE</spring-cloud-starter-netflix-zuul.version>
     <spring.boot.admin.version>2.7.4</spring.boot.admin.version>
     <fabric8.docker.maven.plugin.version>0.40.2</fabric8.docker.maven.plugin.version>
     <fabric8.docker.maven.plugin.java.version>eclipse-temurin:17-jre-alpine</fabric8.docker.maven.plugin.java.version>

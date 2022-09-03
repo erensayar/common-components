@@ -6,7 +6,7 @@
 
   <parent>
     <groupId>com.erensayar</groupId>
-    <artifactId>coc-cloud-main-parent</artifactId>
+    <artifactId>coc-cloud-top-parent</artifactId>
     <version>1.0.0</version>
   </parent>
 

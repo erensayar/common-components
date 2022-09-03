@@ -12,9 +12,9 @@
   </parent>
 
   <groupId>com.erensayar</groupId>
-  <artifactId>coc-parent</artifactId>
+  <artifactId>coc-boot-parent</artifactId>
   <version>1.0.0</version>
-  <name>coc-parent</name>
+  <name>coc-boot-parent</name>
   <packaging>pom</packaging>
   <description>Parent for spring boot projects</description>
 
