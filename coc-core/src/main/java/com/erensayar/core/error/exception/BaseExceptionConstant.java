@@ -77,8 +77,8 @@ public class BaseExceptionConstant {
   public static final ApiError NO_PERMISSION_FOR_CHANGE_THE_OBJ_PROP =
       ApiError.of(2004, "No permission for change the object properties.");
 
-  public static final ApiError MAIL_RECEIVER_NULL =
-      ApiError.of(2005, "Mail receiver can not be null.");
+  public static final ApiError MAIL_RECEIVER_AND_BODY_NULL =
+      ApiError.of(2005, "Mail receiver and body can not be null.");
 
   public static final ApiError MAIL_CONFIRM_CODE_IS_WRONG =
       ApiError.of(2006, "Mail confirm code is wrong.");

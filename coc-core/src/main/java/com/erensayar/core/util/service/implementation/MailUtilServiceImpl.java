@@ -40,16 +40,24 @@ public class MailUtilServiceImpl implements MailUtilService {
   public void sendMail(Mail mail) {
     SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-    if (mail.getTo() == null) {
+    if (mail.getTo() == null || mail.getBody() == null ) {
       throw new BadRequestException(LogModel.builder()
-          .apiError(BaseExceptionConstant.MAIL_RECEIVER_NULL)
+          .apiError(BaseExceptionConstant.MAIL_RECEIVER_AND_BODY_NULL)
           .build());
     }
     mailMessage.setTo(mail.getTo());
-    mailMessage.setCc(mail.getCc());
-    mailMessage.setBcc(mail.getBcc());
-    mailMessage.setSubject(mail.getSubject());
     mailMessage.setText(mail.getBody());
+
+    String cc = mail.getCc();
+    String bcc = mail.getBcc();
+    String subject = mail.getSubject();
+    if(cc != null)
+      mailMessage.setCc(cc);
+    if(bcc != null)
+      mailMessage.setBcc(bcc);
+    if(subject != null)
+      mailMessage.setSubject(subject);
+
     javaMailSender.send(mailMessage);
   }
 
@@ -124,12 +132,14 @@ public class MailUtilServiceImpl implements MailUtilService {
    * @param newMail New Mail
    */
   @Override
-  public void sendMailForConfirmMailChangeRequest(String newMail) {
+  public void sendConfirmMail(Mail newMail) {
     String confirmCode = UUID.randomUUID().toString().replace("-", "");
     cacheService.put(confirmCode, MailChangeDto.builder()
         .confirmCode(confirmCode)
-        .newMail(newMail)
+        .newMail(newMail.getTo())
         .build());
+    newMail.setBody(newMail.getBody() + confirmCode);
+    sendMail(newMail);
   }
 
   /**
@@ -141,7 +151,7 @@ public class MailUtilServiceImpl implements MailUtilService {
    * @return New Mail
    */
   @Override
-  public MailChangeDto confirmMailChangeRequest(String confirmCode) {
+  public MailChangeDto confirmTheNewMail(String confirmCode) {
     MailChangeDto mailChangeDto = cacheService.findByKey(confirmCode);
     boolean codesAreEqual = mailChangeDto.getConfirmCode().equals(confirmCode);
     if (!codesAreEqual) {

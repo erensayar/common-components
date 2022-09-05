@@ -14,8 +14,8 @@ public interface MailUtilService {
 
   void sendMailAsTemplateWithAttachment(Mail mail, Integer mailTemplateNo, MultipartFile attachment);
 
-  void sendMailForConfirmMailChangeRequest(String newMail);
+  void sendConfirmMail(Mail mail);
 
-  MailChangeDto confirmMailChangeRequest(String confirmCode);
+  MailChangeDto confirmTheNewMail(String confirmCode);
 
 }
