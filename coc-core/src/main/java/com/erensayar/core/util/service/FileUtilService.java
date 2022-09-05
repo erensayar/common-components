@@ -10,6 +10,10 @@ public interface FileUtilService {
 
   void createDirectory(String path);
 
+  boolean fileExistControl(String path);
+
+  void copyFileToTarget(String sourcePath, String targetPath);
+
   String[] getFileList(String path);
 
   String createFileFromEncodedStringData(String encodedData, String path, String fileType) throws IOException;

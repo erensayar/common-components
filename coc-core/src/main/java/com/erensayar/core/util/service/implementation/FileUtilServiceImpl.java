@@ -54,6 +54,21 @@ public class FileUtilServiceImpl implements FileUtilService {
   }
 
   @Override
+  public boolean fileExistControl(String path) {
+    File f = new File(path);
+    return f.isFile();
+  }
+
+  @Override
+  public void copyFileToTarget(String sourcePath, String targetPath) {
+    try {
+      Files.copy(Paths.get(sourcePath), Paths.get(targetPath));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
   public String[] getFileList(String path) {
     String[] fileNames;
     File f = new File(path);
