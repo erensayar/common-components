@@ -1,0 +1,18 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:h2:mem:auth
+    username: sa
+  main:
+    allow-bean-definition-overriding: true # for MethodSecurityConfig.java
+
+api:
+  token:
+    secret-key: 0nl4rr_g0c_3tmeK_1cIn_d09duLaR!
+    expire-time: 720000 # 120 minutes -> 120 * 60 * 1000
