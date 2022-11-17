@@ -10,6 +10,11 @@ import com.erensayar.cocauthserver.model.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 public class SignupRequest {
@@ -31,6 +36,6 @@ public class SignupRequest {
   @Pattern(message = "{api.constraint.message.password.pattern}", regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
   private String password;
 
-  private Role role;
+  private List<Role> roles = new ArrayList<>();
 
 }

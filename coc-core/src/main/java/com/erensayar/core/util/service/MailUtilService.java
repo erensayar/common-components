@@ -16,6 +16,8 @@ public interface MailUtilService {
 
   void sendConfirmMail(Mail mail);
 
+  void sendConfirmMail(String newMailAsString);
+
   MailChangeDto confirmTheNewMail(String confirmCode);
 
 }
