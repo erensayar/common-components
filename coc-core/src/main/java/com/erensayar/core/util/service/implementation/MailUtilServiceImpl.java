@@ -142,6 +142,15 @@ public class MailUtilServiceImpl implements MailUtilService {
     sendMail(newMail);
   }
 
+  @Override
+  public void sendConfirmMail(String newMailAsString) {
+    sendConfirmMail(Mail.builder()
+            .to(newMailAsString)
+            .subject("Mail Change request")
+            .body("Mail change confirm code: ")
+            .build());
+  }
+
   /**
    * Client click the generated confirm link then run here and get the object by key from cache. If confirm code is
    * present in the cache mail change process can be start.

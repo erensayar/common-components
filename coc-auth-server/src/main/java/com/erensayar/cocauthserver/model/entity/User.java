@@ -1,25 +1,19 @@
 package com.erensayar.cocauthserver.model.entity;
 
-import java.util.Collection;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
 import com.erensayar.cocauthserver.model.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -49,14 +43,21 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Enumerated
-    private Role role;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ElementCollection(targetClass = Role.class)
+    @JoinTable(name = "RLT_ACCOUNT_ROLES")
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
+
+    @Column(name = "mail_verification")
+    @Builder.Default
+    private Boolean mailVerification = false;
 
     // Security
     // <=============================================================================================>
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList(this.role.name());
+        return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.name())).toList();
     }
 
     @Override

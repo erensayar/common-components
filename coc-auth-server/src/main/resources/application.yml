@@ -1,4 +1,21 @@
 spring:
+  mail:
+    default-encoding: UTF-8
+    protocol: smtp
+    test-connection: false
+    host: smtp.gmail.com
+    port: 587
+    username: <mail>
+    password: <pass>
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
   h2:
     console:
       enabled: true
@@ -12,7 +29,22 @@ spring:
   main:
     allow-bean-definition-overriding: true # for MethodSecurityConfig.java
 
-api:
-  token:
-    secret-key: 0nl4rr_g0c_3tmeK_1cIn_d09duLaR!
-    expire-time: 720000 # 120 minutes -> 120 * 60 * 1000
+core:
+  log:
+    storage-time:
+      #LogType - Day
+      info: 7
+      warning: 14
+      technical-error: -1 # You can enter day (maybe:365)  or enter -1. [-1 : permanent storage]
+      business-error: -1 # You can enter day (maybe:1095) or enter -1. [-1 : permanent storage]
+
+auth:
+  api:
+    token:
+      secret-key: 0nl4rr_g0c_3tmeK_1cIn_d09duLaR!
+      expire-time: 720000 # 120 minutes -> 120 * 60 * 1000
+    mail:
+      confirm:
+        subject:
+        body:
+        base-link:

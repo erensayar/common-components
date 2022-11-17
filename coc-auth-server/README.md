@@ -1,0 +1,1 @@
+hem dependency hem servis olarak kullanilabilir
