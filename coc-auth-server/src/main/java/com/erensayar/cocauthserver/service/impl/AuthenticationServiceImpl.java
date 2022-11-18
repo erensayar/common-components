@@ -14,16 +14,10 @@ import com.erensayar.core.log.model.enums.LogType;
 import com.erensayar.core.util.model.dto.Mail;
 import com.erensayar.core.util.model.dto.MailChangeDto;
 import com.erensayar.core.util.service.MailUtilService;
-import com.erensayar.cocauthserver.component.AuthConstants;
 import com.erensayar.cocauthserver.exception.Exceptions;
-import com.erensayar.cocauthserver.model.entity.User;
-import com.erensayar.cocauthserver.model.request.LoginRequest;
-import com.erensayar.cocauthserver.model.request.SignupRequest;
-import com.erensayar.cocauthserver.model.response.LoginResponse;
 import com.erensayar.cocauthserver.repository.UserRepository;
 import com.erensayar.cocauthserver.service.JwtTokenService;
 import com.erensayar.cocauthserver.service.UserService;
-import com.erensayar.cocauthserver.service.AuthenticationService;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -31,19 +25,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final UserRepository userRepository;
     private final JwtTokenService jwtTokenService;
     private final MailUtilService mailUtilService;
-    private final AuthConstants authConstants;
     private final MailConstants mailConstants;
+
 
     @Override
     public User signUp(SignupRequest signUpRequest) {
@@ -65,10 +59,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         mailUtilService.sendConfirmMail(Mail.builder()
                 .to(signUpRequest.getEmail())
                 .subject(mailConstants.getMail().getConfirm().getSubject())
-                .body(mailConstants.getMail().getConfirm().getBody() + ": " + mailConstants.getMail().getConfirm().getBaseLink())
+                .body(mailConstants.getMail().getConfirm().getBody() + ": " + mailConstants.getMail().getConfirm().getBaseConfirmUrl())
                 .build());
         return userService.save(signUpRequest);
     }
+
 
     @Override
     public LoginResponse signIn(LoginRequest signInRequest) {
@@ -91,6 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 user.getAuthorities());
     }
 
+
     @Override
     public void confirmMail(String confirmCode) {
         MailChangeDto mailChangeDto = null;
@@ -107,8 +103,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userRepository.save(user);
     }
 
+
     // PRIVATE
     // <=================================================================================================================>
+
 
     private void checkMailConfirm(LoginRequest signInRequest) {
         Optional<User> optAcc = userRepository.findByUsername(signInRequest.getUsername());

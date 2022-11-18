@@ -20,6 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @Table(name = "USERS", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "userName")
@@ -45,7 +46,7 @@ public class User implements UserDetails {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection(targetClass = Role.class)
-    @JoinTable(name = "RLT_ACCOUNT_ROLES")
+    @JoinTable(name = "RLT_USER_ROLES")
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
 

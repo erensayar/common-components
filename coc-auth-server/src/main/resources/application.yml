@@ -26,8 +26,8 @@ spring:
   datasource:
     url: jdbc:h2:mem:auth
     username: sa
-  main:
-    allow-bean-definition-overriding: true # for MethodSecurityConfig.java
+  #main:
+  #  allow-bean-definition-overriding: true # for MethodSecurityConfig.java
 
 core:
   log:
@@ -45,6 +45,6 @@ auth:
       expire-time: 720000 # 120 minutes -> 120 * 60 * 1000
     mail:
       confirm:
-        subject:
-        body:
-        base-link:
+        subject: New Mail Register Request
+        body: Confirm Link ->
+        base-confirm-url: http://127.0.0.1

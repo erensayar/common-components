@@ -16,7 +16,9 @@ import java.util.Date;
 @Service
 public class JwtTokenServiceImpl implements JwtTokenService {
 
+
     private final AuthConstants authConstants;
+
 
     @Override
     public String generateJwtToken(Authentication authentication) {
@@ -29,6 +31,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
                 .compact();
     }
 
+
     @Override
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser()
@@ -37,11 +40,13 @@ public class JwtTokenServiceImpl implements JwtTokenService {
                 .getSubject();
     }
 
+
     @Override
     public boolean isExpired(String token) {
         Claims claims = getClaims(token);
         return claims.getExpiration().after(new Date(System.currentTimeMillis()));
     }
+
 
     @Override
     public Claims getClaims(String token) {
@@ -50,6 +55,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
 
     @Override
     public boolean validateJwtToken(String authToken) {

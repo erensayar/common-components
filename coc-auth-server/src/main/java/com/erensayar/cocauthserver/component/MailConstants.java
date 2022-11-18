@@ -28,7 +28,7 @@ public class MailConstants {
         public static class Confirm {
             private String subject;
             private String body;
-            private String baseLink;
+            private String baseConfirmUrl;
         }
 
     }

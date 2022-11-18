@@ -31,6 +31,7 @@ import javax.transaction.Transactional;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailUtilService mailUtilService;
