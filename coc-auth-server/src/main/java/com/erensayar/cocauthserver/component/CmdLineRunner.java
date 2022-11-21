@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 
@@ -15,7 +16,8 @@ import java.util.Collections;
 public class CmdLineRunner {
 
     @Bean
-    public CommandLineRunner loadData(@Autowired final UserRepository userRepository) {
+    public CommandLineRunner loadData(@Autowired final UserRepository userRepository,
+                                      @Autowired final PasswordEncoder passwordEncoder) {
         return (args) -> {
             System.out.println("-------------------");
             System.out.println("### APP STARTED ###");
@@ -24,7 +26,7 @@ public class CmdLineRunner {
                     .email("user1@mail.com")
                     .roles(Collections.singleton(Role.USER))
                     .username("User-1")
-                    .password("User1pass")
+                    .password(passwordEncoder.encode("User1pass"))
                     .mailVerification(true)
                     .build());
 

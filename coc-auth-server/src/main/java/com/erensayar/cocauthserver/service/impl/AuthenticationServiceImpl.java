@@ -89,8 +89,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 jwtToken,
                 user.getId(),
                 user.getUsername(),
-                user.getEmail(),
-                user.getAuthorities());
+                user.getEmail());
     }
 
 
