@@ -1,6 +1,9 @@
 package com.erensayar.cocauthserver.service.impl;
 
+import com.erensayar.cocauthserver.exception.Exceptions;
+import com.erensayar.cocauthserver.model.entity.User;
 import com.erensayar.cocauthserver.model.request.SignupRequest;
+import com.erensayar.cocauthserver.model.request.UserRequest;
 import com.erensayar.cocauthserver.repository.UserRepository;
 import com.erensayar.cocauthserver.service.UserService;
 import com.erensayar.core.error.exception.BadRequestException;
@@ -8,42 +11,27 @@ import com.erensayar.core.error.exception.NoContentException;
 import com.erensayar.core.log.model.dto.LogModel;
 import com.erensayar.core.log.model.enums.LogType;
 import com.erensayar.core.util.service.MailUtilService;
-import com.erensayar.cocauthserver.exception.Exceptions;
-import com.erensayar.cocauthserver.model.entity.User;
-import com.erensayar.cocauthserver.model.enums.Role;
-import com.erensayar.cocauthserver.model.request.UserRequest;
-
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.erensayar.core.util.service.UtilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.ReflectionUtils;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailUtilService mailUtilService;
-
-
-    @Override
-    @Transactional
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException("User not available with this username: " + username));
-    }
-
+    private final UtilService utilService;
 
     @Override
     public User save(SignupRequest signUpRequest) {
@@ -53,6 +41,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .roles(new HashSet<>(signUpRequest.getRoles()))
                 .build();
+
+        // For Easy Development
+        if (utilService.activeProfileCheck("local") || utilService.activeProfileCheck("default")) {
+            user.setMailVerification(true);
+        }
+
         return userRepository.save(user);
     }
 
@@ -105,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         fields.forEach((key, value) -> {
             Field field = ReflectionUtils.findRequiredField(User.class, key);
             field.setAccessible(true);
-            if(key.equals("email") && value != null && !user.getEmail().equals(value)){
+            if (key.equals("email") && value != null && !user.getEmail().equals(value)) {
                 mailUtilService.sendConfirmMail((String) value);
                 user.setMailVerification(false);
             }

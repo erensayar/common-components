@@ -1,8 +1,7 @@
 package com.erensayar.cocauthserver.service;
 
-
 import com.erensayar.cocauthserver.model.entity.User;
-import com.erensayar.cocauthserver.service.impl.UserServiceImpl;
+import com.erensayar.cocauthserver.service.impl.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtTokenService jwtTokenService;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -39,7 +38,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             if (jwt != null && jwtTokenService.validateJwtToken(jwt)) {
                 String username = jwtTokenService.getUserNameFromJwtToken(jwt);
-                User user = userService.loadUserByUsername(username);
+                User user = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

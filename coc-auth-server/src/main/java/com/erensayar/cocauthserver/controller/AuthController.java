@@ -4,8 +4,10 @@ import com.erensayar.cocauthserver.model.entity.User;
 import com.erensayar.cocauthserver.model.request.LoginRequest;
 import com.erensayar.cocauthserver.model.request.SignupRequest;
 import com.erensayar.cocauthserver.model.response.LoginResponse;
+import com.erensayar.cocauthserver.model.response.SignupResponse;
 import com.erensayar.cocauthserver.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AuthenticationService authenticationService;
+    private final ModelMapper modelMapper;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -25,7 +28,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        return ResponseEntity.ok(authenticationService.signUp(signUpRequest));
+    public ResponseEntity<SignupResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        User user = authenticationService.signUp(signUpRequest);
+        return ResponseEntity.ok(modelMapper.map(user, SignupResponse.class));
     }
 }

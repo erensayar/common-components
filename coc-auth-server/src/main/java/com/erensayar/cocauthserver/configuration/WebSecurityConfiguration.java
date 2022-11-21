@@ -2,7 +2,7 @@ package com.erensayar.cocauthserver.configuration;
 
 import com.erensayar.cocauthserver.service.AuthEntryPoint;
 import com.erensayar.cocauthserver.service.AuthTokenFilter;
-import com.erensayar.cocauthserver.service.impl.UserServiceImpl;
+import com.erensayar.cocauthserver.service.impl.UserDetailsServiceImpl;
 import com.erensayar.core.util.service.UtilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +39,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     };
 
-    private final UserServiceImpl userService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final AuthEntryPoint unauthorizedHandler;
     private final UtilService utilService;
 
@@ -71,7 +71,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                .userDetailsService(userService)
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 

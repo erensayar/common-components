@@ -1,12 +1,15 @@
 package com.erensayar.cocauthserver.service.impl;
 
 import com.erensayar.cocauthserver.component.MailConstants;
+import com.erensayar.cocauthserver.exception.Exceptions;
 import com.erensayar.cocauthserver.model.entity.User;
 import com.erensayar.cocauthserver.model.request.LoginRequest;
 import com.erensayar.cocauthserver.model.request.SignupRequest;
 import com.erensayar.cocauthserver.model.response.LoginResponse;
+import com.erensayar.cocauthserver.repository.UserRepository;
 import com.erensayar.cocauthserver.service.AuthenticationService;
-import org.springframework.stereotype.Service;
+import com.erensayar.cocauthserver.service.JwtTokenService;
+import com.erensayar.cocauthserver.service.UserService;
 import com.erensayar.core.error.exception.BadRequestException;
 import com.erensayar.core.error.exception.BaseExceptionConstant;
 import com.erensayar.core.log.model.dto.LogModel;
@@ -14,17 +17,16 @@ import com.erensayar.core.log.model.enums.LogType;
 import com.erensayar.core.util.model.dto.Mail;
 import com.erensayar.core.util.model.dto.MailChangeDto;
 import com.erensayar.core.util.service.MailUtilService;
-import com.erensayar.cocauthserver.exception.Exceptions;
-import com.erensayar.cocauthserver.repository.UserRepository;
-import com.erensayar.cocauthserver.service.JwtTokenService;
-import com.erensayar.cocauthserver.service.UserService;
-import java.util.Map;
-import java.util.Optional;
+import com.erensayar.core.util.service.UtilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final JwtTokenService jwtTokenService;
+    private final UtilService utilService;
     private final MailUtilService mailUtilService;
     private final MailConstants mailConstants;
 
@@ -56,11 +59,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build());
         }
 
-        mailUtilService.sendConfirmMail(Mail.builder()
-                .to(signUpRequest.getEmail())
-                .subject(mailConstants.getMail().getConfirm().getSubject())
-                .body(mailConstants.getMail().getConfirm().getBody() + ": " + mailConstants.getMail().getConfirm().getBaseConfirmUrl())
-                .build());
+        // If, Used For Easy Development
+        if (!utilService.activeProfileCheck("default") && !utilService.activeProfileCheck("local") ) {
+            mailUtilService.sendConfirmMail(Mail.builder()
+                    .to(signUpRequest.getEmail())
+                    .subject(mailConstants.getMail().getConfirm().getSubject())
+                    .body(mailConstants.getMail().getConfirm().getBody() + ": " + mailConstants.getMail().getConfirm().getBaseConfirmUrl())
+                    .build());
+        }
+
         return userService.save(signUpRequest);
     }
 

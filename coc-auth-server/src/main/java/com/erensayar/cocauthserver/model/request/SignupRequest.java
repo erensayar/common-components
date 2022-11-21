@@ -1,19 +1,16 @@
 package com.erensayar.cocauthserver.model.request;
 
+import com.erensayar.cocauthserver.model.enums.Role;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import com.erensayar.cocauthserver.model.enums.Role;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
