@@ -15,9 +15,18 @@ public enum Role {
     private final int val;
     private final int roleGroupId;
 
-    public static Role getValById(Integer id) {
+    public static Role getRoleByVal(Integer id) {
         for (Role e : values()) {
             if (e.val == id) {
+                return e;
+            }
+        }
+        return UNKNOWN;
+    }
+
+    public static Role getRoleByGroupId(Integer id) {
+        for (Role e : values()) {
+            if (e.roleGroupId == id) {
                 return e;
             }
         }
