@@ -33,6 +33,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(columnDefinition = "uuid")
     private UUID id;
 
     @Column(name = "username", length = 50)

@@ -25,8 +25,8 @@ public class CmdLineRunner {
             User user1 = userRepository.save(User.builder()
                     .email("user1@mail.com")
                     .roles(Collections.singleton(Role.USER))
-                    .username("User-1")
-                    .password(passwordEncoder.encode("User1pass"))
+                    .username("User_1")
+                    .password(passwordEncoder.encode("User_1_pass"))
                     .mailVerification(true)
                     .build());
 

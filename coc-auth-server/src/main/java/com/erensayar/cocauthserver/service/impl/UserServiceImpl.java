@@ -2,6 +2,7 @@ package com.erensayar.cocauthserver.service.impl;
 
 import com.erensayar.cocauthserver.exception.Exceptions;
 import com.erensayar.cocauthserver.model.entity.User;
+import com.erensayar.cocauthserver.model.enums.Role;
 import com.erensayar.cocauthserver.model.request.SignupRequest;
 import com.erensayar.cocauthserver.model.request.UserRequest;
 import com.erensayar.cocauthserver.repository.UserRepository;
@@ -18,10 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -39,7 +37,7 @@ public class UserServiceImpl implements UserService {
                 .username(signUpRequest.getUsername())
                 .email(signUpRequest.getEmail())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .roles(new HashSet<>(signUpRequest.getRoles()))
+                .roles(Collections.singleton(Role.USER))
                 .build();
 
         // For Easy Development

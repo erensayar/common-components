@@ -1,6 +1,5 @@
 package com.erensayar.cocauthserver.model.request;
 
-import com.erensayar.cocauthserver.model.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +8,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -33,6 +30,6 @@ public class SignupRequest {
   @Pattern(message = "{api.constraint.message.password.pattern}", regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
   private String password;
 
-  private List<Role> roles = new ArrayList<>();
+  //private List<Role> roles = new ArrayList<>();
 
 }
